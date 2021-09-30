@@ -9,6 +9,7 @@
 #define bloque "../Bomberman/images/Bloquegris.png"
 #define puerta "../Bomberman/images/Puerta.png"
 #define ladrillo "../Bomberman/images/Bloqueladrillo.png"
+
 using namespace std;
 
 QT_BEGIN_NAMESPACE
