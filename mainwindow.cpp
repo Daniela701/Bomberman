@@ -51,7 +51,6 @@ MainWindow::MainWindow(QWidget *parent)
                     if(aleatorio2==2){
                         scene->addRect(j*50,i*50,50,50,QPen(),bloqueladrillo);
                     }
-
                 }
             }
         }
