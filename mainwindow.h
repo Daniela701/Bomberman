@@ -4,11 +4,14 @@
 #include <QMainWindow>
 #include <QGraphicsScene>
 #include <QImage>
+#include <QTimer>
+#include <QDebug>
 #include <iostream>
 #include <ctime>
-#define bloque "../Bomberman/images/Bloquegris.png"
-#define puerta "../Bomberman/images/Puerta.png"
-#define ladrillo "../Bomberman/images/Bloqueladrillo.png"
+#include <QKeyEvent>
+#include <QGraphicsItem>
+#include <QGraphicsRectItem>
+#include <list>
 
 using namespace std;
 
@@ -22,10 +25,17 @@ class MainWindow : public QMainWindow
 
 public:
     MainWindow(QWidget *parent = nullptr);
+    bool colision();
     ~MainWindow();
-
+protected:
+    void keyPressEvent(QKeyEvent *e);
 private:
     Ui::MainWindow *ui;
     QGraphicsScene *scene;
+    int aleatorio,aleatorio2,cont=0,posx=0,posy=0;
+    list<QGraphicsRectItem *> bloques;
+    list<QGraphicsRectItem *> ladrillos;
+    list<QGraphicsRectItem *>::iterator elemento;
+    QGraphicsRectItem *rect;
 };
 #endif // MAINWINDOW_H
