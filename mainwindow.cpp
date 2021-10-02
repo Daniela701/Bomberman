@@ -14,6 +14,7 @@ MainWindow::MainWindow(QWidget *parent)
     QImage im3("../Bomberman/images/Puerta.png"),im4("../Bomberman/images/Jugador.png");
     QBrush bloquegris(im1),bloqueladrillo(im2),Puerta(im3),Jugador(im4);
 
+
     int a[13][31]=
     {
           {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
@@ -33,22 +34,22 @@ MainWindow::MainWindow(QWidget *parent)
         for(int i=0;i<13;i++){
             for(int j=0;j<31;j++){
                 if(a[i][j]==1){
-                    bloques.push_back(scene->addRect(j*50,i*50,50,50,QPen(),bloquegris));
+                    bloques.push_back(scene->addRect(j*50,i*50,50,50,QPen(QColor(255,255,255,0)),bloquegris));
 
                 }
                 else if(a[i][j]==0){
                     cont++;
                     if(cont==1){
-                        rect=scene->addRect(j*52,i*52,40,40,QPen(QColor("#408b2c")),Jugador);
+                        rect=scene->addRect(j*51,i*51,42,42,QPen(QColor(255,255,255,0)),Jugador);
                     }
                     else if(cont>3){
                         if(cont==aleatorio){
                             scene->addRect(j*50,i*50,50,50,QPen(),Puerta);
-                            ladrillos.push_back(scene->addRect(j*50,i*50,50,50,QPen(),bloqueladrillo));
+                            ladrillos.push_back(scene->addRect(j*50,i*50,50,50,QPen(QColor(255,255,255,0)),bloqueladrillo));
                         }
                         aleatorio2= rand()%(3-0+1)+0;
                         if(aleatorio2==2){
-                            ladrillos.push_back(scene->addRect(j*50,i*50,50,50,QPen(),bloqueladrillo));
+                            ladrillos.push_back(scene->addRect(j*50,i*50,50,50,QPen(QColor(255,255,255,0)),bloqueladrillo));
                         }
                     }
                 }
@@ -60,40 +61,54 @@ MainWindow::MainWindow(QWidget *parent)
 
 void MainWindow::keyPressEvent(QKeyEvent *e){
 
+    QImage im1("../Bomberman/images/Abajo.png"),im2("../Bomberman/images/Jugador.png"),im3("../Bomberman/images/LadoI.png");
+    QImage im4("../Bomberman/images/Arriba.png"),im5("../Bomberman/images/LadoD.png"),im6("../Bomberman/images/Bomba.png");
+    QBrush ab1(im1),ab(im2),li(im3),arr(im4),ld(im5),bom(im6);
     switch (e->key()) {
     case Qt::Key_A:
       {
         posx-=5;
+        rect->setBrush(li);
         if(colision()){
-            posx+=8;
+            posx+=10;
         }
       }
         break;
     case Qt::Key_W:
       {
         posy-=5;
+        rect->setBrush(arr);
         if(colision()){
-            posy+=8;
+            posy+=10;
         }
       }
         break;
     case Qt::Key_D:
       {
         posx+=5;
+        rect->setBrush(ld);
         if(colision()){
-            posx-=8;
+            posx-=10;
         }
       }
         break;
     case Qt::Key_S:
       {
         posy+=5;
+        rect->setBrush(ab1);
         if(colision()){
-            posy-=8;
+            posy-=10;
         }
       }
         break;
-    }
+    case Qt::Key_Space:
+      {
+        bomba=scene->addRect(posx+50,posy+50,50,50,QPen(QColor(255,255,255,0)),bom);
+        if(colision()){
+        }
+      }
+        break;
+   }
     rect->setPos(posx,posy);
     ui->graphicsView->setSceneRect(posx-100,posy-100,300,300);
 }

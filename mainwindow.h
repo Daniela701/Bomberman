@@ -11,6 +11,7 @@
 #include <QKeyEvent>
 #include <QGraphicsItem>
 #include <QGraphicsRectItem>
+#include <QGraphicsEllipseItem>
 #include <list>
 
 using namespace std;
@@ -37,5 +38,6 @@ private:
     list<QGraphicsRectItem *> ladrillos;
     list<QGraphicsRectItem *>::iterator elemento;
     QGraphicsRectItem *rect;
+    QGraphicsRectItem *bomba;
 };
 #endif // MAINWINDOW_H
