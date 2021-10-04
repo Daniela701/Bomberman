@@ -69,7 +69,7 @@ void MainWindow::keyPressEvent(QKeyEvent *e){
       {
         posx-=5;
         rect->setBrush(li);
-        if(colision()){
+        if(colisionparedes()){
             posx+=10;
         }
       }
@@ -78,7 +78,7 @@ void MainWindow::keyPressEvent(QKeyEvent *e){
       {
         posy-=5;
         rect->setBrush(arr);
-        if(colision()){
+        if(colisionparedes()){
             posy+=10;
         }
       }
@@ -87,7 +87,7 @@ void MainWindow::keyPressEvent(QKeyEvent *e){
       {
         posx+=5;
         rect->setBrush(ld);
-        if(colision()){
+        if(colisionparedes()){
             posx-=10;
         }
       }
@@ -96,16 +96,19 @@ void MainWindow::keyPressEvent(QKeyEvent *e){
       {
         posy+=5;
         rect->setBrush(ab1);
-        if(colision()){
+        if(colisionparedes()){
             posy-=10;
         }
       }
         break;
     case Qt::Key_Space:
       {
+        posx2=posx+50;
+        posy2=posy+50;
         bomba=scene->addRect(posx+50,posy+50,50,50,QPen(QColor(255,255,255,0)),bom);
-        if(colision()){
-        }
+        //posx2+=20;
+        //posy2+=20;
+        QTimer::singleShot(2000,this,SLOT(explosion()));
       }
         break;
    }
@@ -113,7 +116,7 @@ void MainWindow::keyPressEvent(QKeyEvent *e){
     ui->graphicsView->setSceneRect(posx-100,posy-100,300,300);
 }
 
-bool MainWindow::colision(){
+bool MainWindow::colisionparedes(){
     rect->setPos(posx,posy);
     for(auto item:bloques){
         if(rect->collidesWithItem(item)){
@@ -127,7 +130,40 @@ bool MainWindow::colision(){
     }
     return false;
 }
+void MainWindow::colisionexplosion(){
+    QImage im1("../Bomberman/images/expladrillo.png");
+    QBrush ladrillo(im1);
+    explotar1->hide();
+    explotar2->hide();
+    for(auto item:ladrillos){
+        if(explotar1->collidesWithItem(item)){
+            item->setBrush(ladrillo);
+            destruir.push_back(item);
+            ladrillos.remove(item);
+        }
+        if(explotar2->collidesWithItem(item)){
+            item->setBrush(ladrillo);
+            destruir.push_back(item);
+            ladrillos.remove(item);
+        }
+    }
+    QTimer::singleShot(2000,this,SLOT(explotar()));
+}
+void MainWindow::explosion(){
+    QImage im1("../Bomberman/images/Explosion1.png"),im2("../Bomberman/images/Explosion2.png");
+    QBrush exp1(im1),exp2(im2);
+    explotar1=scene->addRect(posx2+25,posy2-5,20,100,QPen(QColor(255,255,255,0)),exp1);
+    explotar2=scene->addRect(posx2-5,posy2+25,100,20,QPen(QColor(255,255,255,0)),exp2);
+    bomba->hide();
+    QTimer::singleShot(1000,this,SLOT(colisionexplosion()));
 
+}
+void MainWindow::explotar(){
+    for(auto item:destruir){
+        item->hide();
+    }
+
+}
 MainWindow::~MainWindow()
 {
     delete ui;
